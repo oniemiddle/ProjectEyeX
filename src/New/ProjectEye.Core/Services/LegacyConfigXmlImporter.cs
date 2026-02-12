@@ -19,13 +19,13 @@ public sealed class LegacyConfigXmlImporter
             return false;
         }
 
-        var current = await _appConfigStore.LoadAsync(cancellationToken);
+        var current = await _appConfigStore.LoadAsync(cancellationToken).ConfigureAwait(false);
         if (!IsDefaultConfig(current))
         {
             return false;
         }
 
-        var xml = await File.ReadAllTextAsync(legacyConfigPath, cancellationToken);
+        var xml = await File.ReadAllTextAsync(legacyConfigPath, cancellationToken).ConfigureAwait(false);
         var doc = XDocument.Parse(xml);
 
         var imported = new AppConfig
@@ -38,7 +38,7 @@ public sealed class LegacyConfigXmlImporter
             Language = NormalizeLanguage(GetString(doc.Root, current.Language, "Style", "Language", "Value"))
         };
 
-        await _appConfigStore.SaveAsync(imported, cancellationToken);
+        await _appConfigStore.SaveAsync(imported, cancellationToken).ConfigureAwait(false);
         return true;
     }
 

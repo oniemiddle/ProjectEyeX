@@ -25,7 +25,12 @@ public partial class MainWindowViewModel : ObservableObject
         _timer.Tick += (_, _) => _engine.Tick();
 
         OnStateChanged(_engine.Snapshot);
-        _ = LoadSettingsAsync();
+    }
+
+
+    public Task InitializeAsync()
+    {
+        return LoadSettingsAsync();
     }
 
     [ObservableProperty]

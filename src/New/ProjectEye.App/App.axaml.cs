@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectEye.App.ViewModels;
 using ProjectEye.App.Views;
+using ProjectEye.Core;
 using ProjectEye.Core.Abstractions;
 using ProjectEye.Core.Services;
 using ProjectEye.Platform.Abstractions;
@@ -20,7 +21,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         var dataRoot = Path.Combine(AppContext.BaseDirectory, "Data");
 
@@ -29,10 +30,23 @@ public partial class App : Application
             .AddSingleton<INotificationPort, WindowsNotificationPort>()
             .AddSingleton<IAppConfigStore>(_ => new JsonAppConfigStore(Path.Combine(dataRoot, "config.json")))
             .AddSingleton<IStatisticsStore>(_ => new JsonStatisticsStore(Path.Combine(dataRoot, "statistics.json")))
-<<<<<<< codex/plan-migration-to-avaloniaui-wcvsd5
             .AddSingleton<LegacyConfigXmlImporter>()
-=======
->>>>>>> master
+            .AddSingleton(provider => new FocusSessionEngine(new AppConfig(), provider.GetRequiredService<IStatisticsStore>()))
+            .AddSingleton<MainWindowViewModel>()
+            .BuildServiceProvider();
+
+        var configStore = Services.GetRequiredService<IAppConfigStore>();
+        var importer = Services.GetRequiredService<LegacyConfigXmlImporter>();
+        var engine = Services.GetRequiredService<FocusSessionEngine>();
+
+        try
+        {
+            var imported = await importer.TryImportFromFileAsync(Path.Combine(dataRoot, "config.xml"));
+            if (imported)
+            {
+                Console.WriteLine("[LegacyConfigXmlImporter] legacy config.xml imported to config.json");
+            }
+            .AddSingleton<LegacyConfigXmlImporter>()
             .AddSingleton(provider =>
             {
                 var config = provider.GetRequiredService<IAppConfigStore>().LoadAsync().GetAwaiter().GetResult();
@@ -41,26 +55,30 @@ public partial class App : Application
             .AddSingleton<MainWindowViewModel>()
             .BuildServiceProvider();
 
-<<<<<<< codex/plan-migration-to-avaloniaui-wcvsd5
         var importer = Services.GetRequiredService<LegacyConfigXmlImporter>();
         var imported = false;
 
         try
         {
             imported = importer.TryImportFromFileAsync(Path.Combine(dataRoot, "config.xml")).GetAwaiter().GetResult();
+
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine($"[LegacyConfigXmlImporter] import failed: {ex.Message}");
         }
 
-        if (imported)
-        {
-            Console.WriteLine("[LegacyConfigXmlImporter] legacy config.xml imported to config.json");
-        }
+        var config = await configStore.LoadAsync();
+        engine.UpdateConfig(config);
 
-=======
->>>>>>> master
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var viewModel = Services.GetRequiredService<MainWindowViewModel>();
+            await viewModel.InitializeAsync();
+
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = viewModel
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
