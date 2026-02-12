@@ -30,7 +30,7 @@
         <StackPanel Spacing="8">
           <TextBlock FontSize="18" Text="设置" />
 
-          <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8">
+          <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto">
             <TextBlock Grid.Row="0" Grid.Column="0" Text="提醒间隔(分钟)" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WarnMinutes}" />
 
