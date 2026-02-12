@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="ProjectEye.App.Views.MainWindow"
+        Width="760"
+        Height="520"
+        Title="{Binding Title}"
+        mc:Ignorable="d">
+  <ScrollViewer>
+    <StackPanel Margin="24" Spacing="12">
+      <TextBlock FontSize="24" Text="ProjectEye Avalonia Task C" />
+      <TextBlock Text="状态" />
+      <TextBlock FontSize="18" Text="{Binding Status}" />
+      <TextBlock Text="剩余时间" />
+      <TextBlock FontSize="18" Text="{Binding RemainingTime}" />
+
+      <WrapPanel ItemHeight="36" ItemWidth="100">
+        <Button Command="{Binding StartWorkCommand}" Content="开始工作" />
+        <Button Command="{Binding PauseCommand}" Content="暂停" />
+        <Button Command="{Binding ResumeCommand}" Content="继续" />
+        <Button Command="{Binding SkipCommand}" Content="跳过" />
+        <Button Command="{Binding StartTomatoCommand}" Content="番茄" />
+      </WrapPanel>
+
+      <Border Margin="0,12,0,0" Padding="12" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
+        <StackPanel Spacing="8">
+          <TextBlock FontSize="18" Text="设置" />
+
+          <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="提醒间隔(分钟)" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WarnMinutes}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="休息时长(秒)" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RestSeconds}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="番茄时长(分钟)" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TomatoMinutes}" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="声音开关" VerticalAlignment="Center" />
+            <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding SoundEnabled}" Content="启用声音提醒" />
+          </Grid>
+
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Command="{Binding SaveSettingsCommand}" Content="保存设置" />
+            <Button Command="{Binding ReloadSettingsCommand}" Content="重新加载" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</Window>
