@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>ProjectEye.Platform.Abstractions</AssemblyName>
+    <RootNamespace>ProjectEye.Platform.Abstractions</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectEye.Core\ProjectEye.Core.csproj" />
+  </ItemGroup>
+</Project>
