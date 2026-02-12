@@ -9,7 +9,3 @@ rm packages-microsoft-prod.deb
 
 sudo apt-get update
 sudo apt-get install -y dotnet-sdk-8.0
-
-# Persist environment variables
-echo 'export DOTNET_ROOT=/usr/share/dotnet' >> ~/.profile
-echo 'export PATH=$PATH:$DOTNET_ROOT' >> ~/.profile
