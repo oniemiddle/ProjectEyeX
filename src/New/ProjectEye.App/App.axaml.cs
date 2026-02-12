@@ -46,6 +46,22 @@ public partial class App : Application
             {
                 Console.WriteLine("[LegacyConfigXmlImporter] legacy config.xml imported to config.json");
             }
+            .AddSingleton<LegacyConfigXmlImporter>()
+            .AddSingleton(provider =>
+            {
+                var config = provider.GetRequiredService<IAppConfigStore>().LoadAsync().GetAwaiter().GetResult();
+                return new FocusSessionEngine(config, provider.GetRequiredService<IStatisticsStore>());
+            })
+            .AddSingleton<MainWindowViewModel>()
+            .BuildServiceProvider();
+
+        var importer = Services.GetRequiredService<LegacyConfigXmlImporter>();
+        var imported = false;
+
+        try
+        {
+            imported = importer.TryImportFromFileAsync(Path.Combine(dataRoot, "config.xml")).GetAwaiter().GetResult();
+
         }
         catch (Exception ex)
         {
@@ -63,6 +79,11 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow
             {
                 DataContext = viewModel
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = Services.GetRequiredService<MainWindowViewModel>()
             };
         }
 

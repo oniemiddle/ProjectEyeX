@@ -2,7 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ProjectEye.App.ViewModels"
         x:Class="ProjectEye.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         Width="760"
         Height="520"
         Title="{Binding Title}"
@@ -27,7 +30,9 @@
         <StackPanel Spacing="8">
           <TextBlock FontSize="18" Text="设置" />
 
-          <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8">
+          <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto" >
+          <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto,Auto" >
+
             <TextBlock Grid.Row="0" Grid.Column="0" Text="提醒间隔(分钟)" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WarnMinutes}" />
 
