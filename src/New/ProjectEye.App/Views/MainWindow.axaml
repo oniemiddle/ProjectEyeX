@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="ProjectEye.App.Views.MainWindow"
+        Width="700"
+        Height="420"
+        Title="{Binding Title}"
+        mc:Ignorable="d">
+  <StackPanel Margin="24" Spacing="12">
+    <TextBlock FontSize="24" Text="ProjectEye Avalonia Task B" />
+    <TextBlock Text="状态" />
+    <TextBlock FontSize="18" Text="{Binding Status}" />
+    <TextBlock Text="剩余时间" />
+    <TextBlock FontSize="18" Text="{Binding RemainingTime}" />
+
+    <WrapPanel ItemHeight="36" ItemWidth="100">
+      <Button Command="{Binding StartWorkCommand}" Content="开始工作" />
+      <Button Command="{Binding PauseCommand}" Content="暂停" />
+      <Button Command="{Binding ResumeCommand}" Content="继续" />
+      <Button Command="{Binding SkipCommand}" Content="跳过" />
+      <Button Command="{Binding StartTomatoCommand}" Content="番茄" />
+      <Button Command="{Binding SaveDefaultsCommand}" Content="保存默认配置" />
+    </WrapPanel>
+  </StackPanel>
+</Window>
