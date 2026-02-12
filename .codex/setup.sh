@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -e
 
 echo "Installing .NET 8 SDK..."
@@ -10,6 +10,6 @@ rm packages-microsoft-prod.deb
 sudo apt-get update
 sudo apt-get install -y dotnet-sdk-8.0
 
-# Persist environment variables for agent
-echo 'export DOTNET_ROOT=/usr/share/dotnet' >> ~/.bashrc
-echo 'export PATH=$PATH:$DOTNET_ROOT' >> ~/.bashrc
+# Persist environment variables
+echo 'export DOTNET_ROOT=/usr/share/dotnet' >> ~/.profile
+echo 'export PATH=$PATH:$DOTNET_ROOT' >> ~/.profile
