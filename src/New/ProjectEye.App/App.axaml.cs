@@ -29,7 +29,10 @@ public partial class App : Application
             .AddSingleton<INotificationPort, WindowsNotificationPort>()
             .AddSingleton<IAppConfigStore>(_ => new JsonAppConfigStore(Path.Combine(dataRoot, "config.json")))
             .AddSingleton<IStatisticsStore>(_ => new JsonStatisticsStore(Path.Combine(dataRoot, "statistics.json")))
+<<<<<<< codex/plan-migration-to-avaloniaui-wcvsd5
             .AddSingleton<LegacyConfigXmlImporter>()
+=======
+>>>>>>> master
             .AddSingleton(provider =>
             {
                 var config = provider.GetRequiredService<IAppConfigStore>().LoadAsync().GetAwaiter().GetResult();
@@ -38,6 +41,7 @@ public partial class App : Application
             .AddSingleton<MainWindowViewModel>()
             .BuildServiceProvider();
 
+<<<<<<< codex/plan-migration-to-avaloniaui-wcvsd5
         var importer = Services.GetRequiredService<LegacyConfigXmlImporter>();
         var imported = false;
 
@@ -55,6 +59,8 @@ public partial class App : Application
             Console.WriteLine("[LegacyConfigXmlImporter] legacy config.xml imported to config.json");
         }
 
+=======
+>>>>>>> master
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
