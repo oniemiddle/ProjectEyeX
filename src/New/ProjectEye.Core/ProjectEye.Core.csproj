@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>ProjectEye.Core</AssemblyName>
+    <RootNamespace>ProjectEye.Core</RootNamespace>
+  </PropertyGroup>
+</Project>
