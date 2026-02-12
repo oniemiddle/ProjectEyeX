@@ -1,18 +1,17 @@
 # Environment setup
-
-Before running any build or tests, execute:
+Run environment bootstrap first:
 
 bash .codex/setup.sh
 
-# Build instructions
+# Solution location
+The .NET solution is located under the src directory.
 
-Build the solution:
-
+# Restore
+cd src
 dotnet restore
-dotnet build --configuration Release
 
-# Test instructions
+# Build
+dotnet build --configuration Release --no-restore
 
-Run tests:
-
-dotnet test
+# Test
+dotnet test --no-build --configuration Release
