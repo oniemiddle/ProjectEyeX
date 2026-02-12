@@ -25,16 +25,29 @@ public partial class MainWindowViewModel : ObservableObject
         _timer.Tick += (_, _) => _engine.Tick();
 
         OnStateChanged(_engine.Snapshot);
+        _ = LoadSettingsAsync();
     }
 
     [ObservableProperty]
-    private string _title = "ProjectEye Avalonia Migration - Task B";
+    private string _title = "ProjectEye Avalonia Migration - Task C";
 
     [ObservableProperty]
     private string _status = "Idle";
 
     [ObservableProperty]
     private string _remainingTime = "00:00";
+
+    [ObservableProperty]
+    private int _warnMinutes = 45;
+
+    [ObservableProperty]
+    private int _restSeconds = 20;
+
+    [ObservableProperty]
+    private int _tomatoMinutes = 25;
+
+    [ObservableProperty]
+    private bool _soundEnabled = true;
 
     [RelayCommand]
     private void StartWork()
@@ -71,10 +84,43 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SaveDefaultsAsync()
+    private async Task SaveSettingsAsync()
     {
-        await _appConfigStore.SaveAsync(new AppConfig());
-        Status = "Default config saved";
+        var config = BuildConfigFromView();
+        await _appConfigStore.SaveAsync(config);
+        _engine.UpdateConfig(config);
+        Status = "Settings saved";
+    }
+
+    [RelayCommand]
+    private Task ReloadSettingsAsync()
+    {
+        return LoadSettingsAsync();
+    }
+
+    private async Task LoadSettingsAsync()
+    {
+        var config = await _appConfigStore.LoadAsync();
+        WarnMinutes = config.WarnMinutes;
+        RestSeconds = config.RestSeconds;
+        TomatoMinutes = config.TomatoMinutes;
+        SoundEnabled = config.SoundEnabled;
+
+        _engine.UpdateConfig(config);
+        Status = "Settings loaded";
+    }
+
+    private AppConfig BuildConfigFromView()
+    {
+        return new AppConfig
+        {
+            WarnMinutes = Math.Max(1, WarnMinutes),
+            RestSeconds = Math.Max(1, RestSeconds),
+            TomatoMinutes = Math.Max(1, TomatoMinutes),
+            SoundEnabled = SoundEnabled,
+            Theme = "Default",
+            Language = "zh-CN"
+        };
     }
 
     private void EnsureTimerRunning()
