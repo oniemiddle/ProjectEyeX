@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectEye.App.ViewModels;
 using ProjectEye.App.Views;
+using ProjectEye.Core.Abstractions;
+using ProjectEye.Core.Services;
 using ProjectEye.Platform.Abstractions;
 using ProjectEye.Platform.Windows;
 
@@ -20,9 +22,18 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var dataRoot = Path.Combine(AppContext.BaseDirectory, "Data");
+
         Services = new ServiceCollection()
             .AddSingleton<ITrayPort, WindowsTrayPort>()
             .AddSingleton<INotificationPort, WindowsNotificationPort>()
+            .AddSingleton<IAppConfigStore>(_ => new JsonAppConfigStore(Path.Combine(dataRoot, "config.json")))
+            .AddSingleton<IStatisticsStore>(_ => new JsonStatisticsStore(Path.Combine(dataRoot, "statistics.json")))
+            .AddSingleton(provider =>
+            {
+                var config = provider.GetRequiredService<IAppConfigStore>().LoadAsync().GetAwaiter().GetResult();
+                return new FocusSessionEngine(config, provider.GetRequiredService<IStatisticsStore>());
+            })
             .AddSingleton<MainWindowViewModel>()
             .BuildServiceProvider();
 
